@@ -34,12 +34,11 @@ int main()
 	pthread_t subid;
 	pthread_attr_t sub_attr;
 	
-	void* runsub(void * argument);
+	void* runsub(void *);
 	
-	pthread_attr_init(&sub_attr);
+	pthread_attr_init(&sub_attr);	
 	
-	
-	pthread_create(&subid,&sub_attr,runsub,hello);
+	pthread_create(&subid,&sub_attr,runsub,NULL);
 
 	pthread_join(subid,NULL);
 
@@ -47,8 +46,46 @@ int main()
 	return 0;
 }
 
+typedef struct
+{
+	int x;
+	int y;
+}pair; 
+
 void* runsub(void *ptr)
 {
-		
+	// Sub Thread that creates thread for every entry of the new matrix
+	m=5;
+	n=6;
+	pthread_t entry[m][n];
+	
+	void* fillentry (void *);
+	
+	pair pass;
+	
+	for(int i=0;i<m;i++)
+	{
+		for(int j=0;j<n;j++)
+		{
+			pass.x=i;
+			pass.y=j;
+			pthread_create(&entry[i][j],NULL,fillentry,&pass);
+		}
+	}
+	
+	for(int i=0;i<m;i++)
+	{
+		for(int j=0;j<n;j++)
+		{
+			pthread_join(entry[i][j],NULL);
+		}
+	}
+	
+	
+}
+
+void* fillentry(void *ptr)
+{
+	printf("Working on %d,%d\n",((pair*)ptr)->x,((pair*)ptr)->y);
 }
 
