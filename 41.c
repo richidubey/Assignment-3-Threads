@@ -7,35 +7,35 @@ int m,n,k;
 
 int main()
 {
-
+/*
 	for(int i=0;i<10;i++)
 		for(int j=0;j<10;j++)
 			A[i][j]=i+j;
 			
 		for(int i=0;i<10;i++)
 			for(int j=0;j<10;j++)
-				B[i][j]=i+j;
-/*	printf("M: ");*/
-/*	scanf("%d", &m);*/
-/*	*/
-/*	printf("K: ");*/
-/*	scanf("%d", &k);*/
-/*	*/
-/*	printf("N: ");*/
-/*	scanf("%d", &n); */
+				B[i][j]=i+j;*/
+	printf("M: ");
+	scanf("%d", &m);
+	
+	printf("K: ");
+	scanf("%d", &k);
+	
+	printf("N: ");
+	scanf("%d", &n); 
 
-/*	*/
-/*	printf("\nEnter %d*%d Matrix  :",m,k);*/
-/*	*/
-/*	for(int i=0;i<m;i++)*/
-/*		for(int j=0;j<k;j++)*/
-/*			scanf("%d",&A[i][j]);*/
-/*	*/
-/*	printf("\nEnter %d*%d Matrix  :",k,n);*/
-/*		*/
-/*	for(int i=0;i<k;i++)*/
-/*		for(int j=0;j<n;j++)*/
-/*			scanf("%d",&B[i][j]);*/
+	
+	printf("\nEnter %d*%d Matrix  :",m,k);
+	
+	for(int i=0;i<m;i++)
+		for(int j=0;j<k;j++)
+			scanf("%d",&A[i][j]);
+	
+	printf("\nEnter %d*%d Matrix  :",k,n);
+		
+	for(int i=0;i<k;i++)
+		for(int j=0;j<n;j++)
+			scanf("%d",&B[i][j]);
 
 	pthread_t subid;
 	pthread_attr_t sub_attr;
@@ -71,9 +71,9 @@ typedef struct
 void* runsub(void *ptr)
 {
 	// Sub Thread that creates thread for every entry of the new matrix
-	m=5;
-	n=6;
-	k=4;
+//	m=5;
+//	n=6;
+//	k=4;
 	pthread_t entry[m][n];
 	
 	void* fillentry (void *);
@@ -92,8 +92,13 @@ void* runsub(void *ptr)
 		}
 	}
 	
+	printf("A is from thread 1 :\n ");
 	
-
+	
+	for(int i=0;i<m;i++)
+		for(int j=0;j<k;j++)
+			printf("%d ",A[i][j]);
+	
 	
 	int *ret;
 	for(int i=0;i<m;i++)
@@ -112,7 +117,12 @@ void* runsub(void *ptr)
 
 void* fillentry(void *ptr)
 {
-
+printf("A is from thread 2 \n: ");
+	
+	
+	for(int i=0;i<m;i++)
+		for(int j=0;j<k;j++)
+			printf("%d ",A[i][j]);
 	
 	// Row i, Col j
 	
@@ -120,8 +130,14 @@ void* fillentry(void *ptr)
 	
 	*sum=0;
 	
+	printf(" K is = %d",k);
 	for(int i=0;i<k;i++)
-	*sum+=A[((pair*)ptr)->x][k]*B[k][((pair*)ptr)->y];
+	{
+	
+		*sum+=A[((pair*)ptr)->x][i]*B[i][((pair*)ptr)->y];
+		
+		printf("Added  %d + %d  for %d,%d",A[((pair*)ptr)->x][k],B[k][((pair*)ptr)->y],((pair*)ptr)->x,((pair*)ptr)->y);
+	}
 	
 		printf("Working on %d,%d, Sum = %d\n",((pair*)ptr)->x,((pair*)ptr)->y,*sum);
 	
